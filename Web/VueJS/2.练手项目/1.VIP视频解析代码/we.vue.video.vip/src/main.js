@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+/* Http请求使用 axios */
+import axios from 'axios'
+Vue.prototype.$axios = axios
+//Object.defineProperty(Vue.prototype, '$axios', {value: axios})
 
 Vue.config.productionTip = false
 
