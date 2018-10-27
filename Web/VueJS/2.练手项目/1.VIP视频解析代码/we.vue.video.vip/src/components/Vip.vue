@@ -62,7 +62,8 @@ export default {
   },
   mounted: function() {
     this.$axios.get("../static/json/VideoApi.json").then(response => {
-      this.api = response.data;
+      this.api = response.data.api;
+      this.videoSrc = response.data.video;
       this.nowIndex = 0;
     });
     let that = this;
