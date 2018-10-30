@@ -7,9 +7,17 @@ import router from './router'
 import axios from 'axios'
 Vue.prototype.$axios = axios
 //Object.defineProperty(Vue.prototype, '$axios', {value: axios})
+/* vue2 设置网页title */
+import VueWechatTitle from "vue-wechat-title"; 
+Vue.use(VueWechatTitle);
 
 Vue.config.productionTip = false
 
+/*路由发生变化事件 */
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  next()
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

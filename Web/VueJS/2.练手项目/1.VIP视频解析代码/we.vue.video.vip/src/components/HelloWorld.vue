@@ -1,85 +1,15 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <div class="w-head">
+      <h1>{{ title }}</h1>
+      <h2>{{ msg }}</h2>
+    </div>
+    <div class="w-body">
+      <p><a href="#" @click="noIn()">Go xixi Home</a></p>
+      <p><a href="#" @click="noIn()">Go sky Home</a></p>
+      <p><a href="#" @click="goIn()">Go open Home</a></p>
+      <p><a href="/vip">Go vip Video</a></p>
+    </div>
   </div>
 </template>
 
@@ -88,9 +18,18 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      title: 'Welcome to xixily',
+      msg: '西西乐园欢迎您的光临'
     }
-  }
+  },
+  methods: {
+    goIn:function(){
+      alert("您好！亲爱的游客朋友，这儿还在努力建设中...");
+    },
+    noIn: function(index) {
+      alert("禁区，请识擅自闯入")
+    }
+  },
 }
 </script>
 
@@ -99,15 +38,21 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 a {
   color: #42b983;
+}
+.hello{
+  padding: 20px 15px
+}
+.w-head{
+  text-align: center;
+  padding-top: 50px;
+}
+.w-body{
+  padding-top: 50px;
+  text-align: center;
+}
+.w-body p{
+  padding: 5px;
 }
 </style>

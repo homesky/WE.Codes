@@ -11,11 +11,17 @@ export default new Router({
     {
       path: "/",
       name: "HelloWorld",
+      meta: {
+        title: "西西乐园"
+      },
       component: HelloWorld
     },
     {
       path: "/vip",
       name: "Vip",
+      meta: {
+        title: "VIP 视频解析"
+      },
       component: Vip
     }
   ]

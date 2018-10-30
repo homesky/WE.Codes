@@ -83,8 +83,11 @@ ul {
   user-select: none;
 }
 .vip {
-  height: 100%;
+  background-color: #000;
+  padding:5px ;
+  height: calc(100% - 10px);
 }
+
 .api-video {
   width: 100%;
   height: calc(100% - 50px);

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-wechat-title="$route.meta.title"></router-view>
   </div>
 </template>
 
@@ -21,8 +21,6 @@ html,body{height: 100%;}
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background-color: #000;
-  padding:5px ;
-  height: calc(100% - 10px);
+  height: 100%;
 }
 </style>
