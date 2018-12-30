@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+ <head>
+   <link rel="stylesheet" href="openlayer4.64/ol.css" type="text/css">
+   <script src="openlayer4.64/ol.js" type="text/javascript"></script>
+   <script src="FileSaver.min.js"></script>
+   <title>在线地图专题图制件测试</title>
+   
+   <style>
+   .map {
+   	height: 300px;
+   	width: 400px;
+	position: relative;
+   }
+   #mapCanvas{
+	   position: absolute;
+	   top:0;
+	   left: 0;
+	   width: 100%;
+	   height: 100%;
+	   z-index: 99;
+	   pointer-events: none
+   }
+   </style>
+ </head>
+ <body>
+   <h2>在线地图专题图制件测试</h2>
+   <div style="display: flex;">
+	   
+   <div id="map" class="map">
+	   <canvas id="mapCanvas" width="400" height="300" style="border:1px solid red;"></canvas>
+   </div>
+   <canvas id="imgCanvas" width="400" height="300" style="border:1px solid #d3d3d3; margin-left:5px ;"></canvas>
+   <canvas id="imgCanvas2" width="400" height="300" style="border:1px solid #d3d3d3; margin-left:5px ;"></canvas>
+   </div>
+   <div style="margin-top: 10px;">
+	<div class="form">
+      <label>Page size </label>
+      <select id="format">
+        <option value="a0">A0 (slow)</option>
+        <option value="a1">A1</option>
+        <option value="a2">A2</option>
+        <option value="a3">A3</option>
+        <option value="a4" selected>A4</option>
+        <option value="a5">A5 (fast)</option>
+      </select>
+      <label>Resolution </label>
+      <select id="resolution">
+        <option value="72">72 dpi (fast)</option>
+        <option value="150">150 dpi</option>
+        <option value="300">300 dpi (slow)</option>
+      </select>
+	  <button id="create">生成专题图</button>
+	  <button id="export">导出专题图</button>
+	  <button id="test">测试专题图</button>
+    </div>
+   </div>
+   <script type="text/javascript">
+     var map = new ol.Map({
+       target: 'map',
+       layers: [
+         new ol.layer.Tile({
+           source: new ol.source.OSM()
+         })
+       ],
+       view: new ol.View({
+         center: ol.proj.fromLonLat([104.08, 30.65]),
+         zoom: 10
+       })
+     });
+	 //地震导出
+	var dims = {
+        a0: [1189, 841],
+        a1: [841, 594],
+        a2: [594, 420],
+        a3: [420, 297],
+        a4: [297, 210],
+        a5: [210, 148]
+      };
+	 var createButton = document.getElementById('create');
+	 var exportButton = document.getElementById('export');
+	 var testButton = document.getElementById('test');
+	 var mapContext = null;
+	 createButton.addEventListener('click', function() {
+        document.body.style.cursor = 'progress';
+
+        var format = document.getElementById('format').value;
+        var resolution = document.getElementById('resolution').value;
+        var dim = dims[format];
+        var width = Math.round(dim[0] * resolution / 25.4);
+        var height = Math.round(dim[1] * resolution / 25.4);
+        var size =  (map.getSize()); //** @type {module:ol/size~Size} 
+        var extent = map.getView().calculateExtent(size);
+		  console.log(111)
+        map.once('postcompose', function(event) {
+
+		  var canvas = event.context.canvas;
+		  var data = canvas.toDataURL('image/jpeg');
+			console.log(navigator.msSaveBlob)
+			var ctx=canvas.getContext("2d");
+			//drawBk2(ctx)
+			//drawTitle(ctx,"测试专题图");
+			drawMap(canvas)
+			mapContext = ctx;
+			drawBk3(canvas);
+			/* if (navigator.msSaveBlob) {
+				navigator.msSaveBlob(canvas.msToBlob(), 'map.png');
+			} else {
+				canvas.toBlob(function (blob) {
+					saveAs(blob, 'map.png');
+				});
+			} */
+          /* var canvas = event.context.canvas;
+          var data = canvas.toDataURL('image/jpeg');
+          var pdf = new jsPDF('landscape', undefined, format);
+          pdf.addImage(data, 'JPEG', 0, 0, dim[0], dim[1]);
+          pdf.save('map.pdf');
+          // Reset original map size
+          map.setSize(size);
+          map.getView().fit(extent, {size: size});
+          exportButton.disabled = false;
+          document.body.style.cursor = 'auto'; */
+        });
+		exportButton.addEventListener('click', function() {
+		        if (navigator.msSaveBlob) {
+		        	navigator.msSaveBlob(imgCanvas.msToBlob(), 'map.png');
+		        } else {
+		        	imgCanvas.toBlob(function (blob) {
+		        		saveAs(blob, 'map.png');
+		        	});
+		        }
+		});
+		
+		testButton.addEventListener('click', function() {
+				
+			
+				if (navigator.msSaveBlob) {
+					navigator.msSaveBlob(imgCanvas.msToBlob(), 'map.png');
+				} else {
+					imgCanvas.toBlob(function (blob) {
+						saveAs(blob, 'map.png');
+					});
+				}
+		});
+		map.renderSync();
+
+		
+/* 
+        // Set print size
+        var printSize = [width, height];
+        map.setSize(printSize);
+        map.getView().fit(extent, {size: printSize}); */
+      }, false);
+   
+   
+     //专题图
+	 var imgCanvas = document.getElementById('imgCanvas');
+	 var ctx=imgCanvas.getContext("2d");
+	 
+	 var cw = imgCanvas.width;
+	 var ch = imgCanvas.height;
+	 
+	 
+	 var box = {top:40,right:5,bottom:15,left:5,
+	 getWidth(w){
+		 return (w-this.left-this.right);
+	 },
+	 getHeight(h){
+		 return (h-this.top-this.bottom);
+	 }};
+	 
+	 
+	 
+	 
+
+	 
+	 
+	  console.log(imgCanvas)
+	  console.log(ctx.canvas.width)
+	 ctx.fillStyle="#FFF";
+	 ctx.fillRect(0,0,cw,ch);
+	  //绘边框
+	 function drawBk(c){
+		 //设置线宽
+		 c.lineWidth=4;
+		 //设置线的颜色
+         c.strokeStyle="#000";
+		 //绘边框
+		 c.rect(box.left,box.top,box.getWidth(cw), box.getHeight(ch));
+		 c.stroke();
+	 }
+	 function drawTitle(c,text){
+        //绘制文字
+        //描边
+        c.font="25px microsoft yahei";
+		c.fillStyle="#000";
+		c.textAlign='center';
+		c.textBaseline='middle';
+        c.fillText(text,(cw/2), box.top/2);
+	 }
+	 function drawMap(map){
+		 ctx.drawImage(map,
+		 box.left+1,
+		 box.top+1,
+		 box.getWidth(cw)-2,
+		 box.getHeight(ch)-2,
+		 box.left+1,
+		 box.top+1,
+		 box.getWidth(cw)-2,
+		 box.getHeight(ch)-2
+		 );
+	 }
+	 //drawBk(ctx);
+	 drawTitle(ctx,"测试地震专题图")
+	 
+	 
+	 
+	 
+	 //绘边框
+	 function drawBk2(ctx){
+		 //设置线宽
+		 ctx.lineWidth = 1;
+		 //设置线的颜色
+		 ctx.strokeStyle = "#000";
+		 ctx.moveTo(0,0);  //移动画笔到0,0点
+		 ctx.lineTo(0,300);  //画线到300,300的位置
+		 ctx.lineTo(400,300);  //画线到300,300的位置
+		 ctx.lineTo(400,0);  //画线到300,300的位置
+		 ctx.lineTo(395,0);  //画线到300,300的位置
+		 ctx.lineTo(395,295);  //画线到300,300的位置
+		 ctx.lineTo(5,295);  //画线到300,300的位置
+		 ctx.lineTo(5,295);  //画线到300,300的位置
+		 ctx.lineTo(5,0);  //画线到300,300的位置
+		 ctx.stroke();  //执行描边
+		 ctx.moveTo(0,0);
+		 ctx.lineTo(0,40);  //画线到0,300的位置
+		 ctx.lineTo(400,40);  //画线到0,300的位置
+		 ctx.lineTo(400,0);  //画线到0,300的位置
+		 ctx.fillStyle="#FFF";  //设置填充颜色
+		 ctx.fill();  //执行填充
+	 }
+	 
+	 
+	 var imgCanvas2 = document.getElementById('imgCanvas2');
+		var mapCanvas = document.getElementById('mapCanvas');
+	 function drawBk3(canvas){
+
+		console.log(mapCanvas)
+		var ctx=mapCanvas.getContext("2d");
+		drawBk2(ctx)
+		drawTitle(ctx,"测试专题图");
+	 }
+	 
+   </script>
+ </body>
+</html>
