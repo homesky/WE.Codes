@@ -7,12 +7,18 @@
 </template>
 
 <script>
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
+import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
 export default {
   data() {
     return {
-      locale: zhCN,
+      zh_CN,
     }
+  },
+  mounted(){
+    //http://192.168.0.143:8054/api/equake/getnew
+    this.$get('equake/getnew').then((res)=>{
+     console.log(res);
+    })
   }
 }
 </script>
