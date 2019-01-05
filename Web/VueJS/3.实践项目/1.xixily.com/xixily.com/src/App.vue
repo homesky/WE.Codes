@@ -1,24 +1,29 @@
 <template>
-  <a-locale-provider :locale="zh_CN">
-    <div id="main" class="app-main">
-      <router-view v-wechat-title="$route.meta.title"></router-view>
+  <div id="app">
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
     </div>
-  </a-locale-provider>
+    <router-view/>
+  </div>
 </template>
 
-<script>
-import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
-export default {
-  data() {
-    return {
-      zh_CN,
+<style lang="less">
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+#nav {
+  padding: 30px;
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    &.router-link-exact-active {
+      color: #42b983;
     }
-  },
-  mounted(){
-    //http://192.168.0.143:8054/api/equake/getnew
-    this.$get('equake/getnew').then((res)=>{
-     console.log(res);
-    })
   }
 }
-</script>
+</style>
